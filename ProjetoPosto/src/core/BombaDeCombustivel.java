@@ -27,7 +27,7 @@ public class BombaDeCombustivel {
 					    "*      ISIDROCORP GAS & ENERGY           *\n"+
 					    "------------------------------------------\n"+
 					    " Combustivel : "+nome+"\n"+
-					    " Preço Litro : R$ " + String.format("%.3f\n", precoLitro) +
+					    " PreÃ§o Litro : R$ " + String.format("%.3f\n", precoLitro) +
 					    " Quantidade  :    " + String.format("%.3f\n", qtdeLitros) +
 					    " Valor Total : R$ " + String.format("%.2f\n", totalPagar) +
 					    "******************************************";
