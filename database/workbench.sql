@@ -132,10 +132,6 @@ INSERT INTO `itau.clientes` (`codigo_cliente`,`nome_cliente`,`idade_cliente`,`em
 			(104,"Hoyt Bernard",42,"ligula.Aliquam@aliquamerosturpis.com");
 
 
-
-
-
--- 
 -- Verificando os dados inseridos na tabela
 select * from itau.clientes where idade_cliente=20;
 
@@ -143,7 +139,6 @@ select * from itau.clientes where idade_cliente=20;
 select * from itau.clientes where idade_cliente >=18 and idade_cliente <=50 order by idade_cliente;
 select * from itau.clientes where idade_cliente between 18 and 50 order by idade_cliente;
 select * from itau.clientes where idade_cliente >= 50;
-
 -- Busca exata
 select * from itau.clientes where nome_cliente = "Indira";
 
@@ -158,3 +153,215 @@ select * from itau.clientes where nome_cliente like "%Ind%";
 
 -- Buscar pela primeira letra
 select * from itau.clientes where nome_cliente like "C%";
+
+Use itau;
+-- Fazendo backup da estrutura de tabelas
+create table itau.bkclientes select * from itau.clientes;
+
+-- Contando as linhas e checando a integridade do backup
+select count(*) as Total_Tab_Clientes from itau.clientes;
+select count(*) from itau.bkclientes;
+
+-- Deletando a tabela
+delete from itau.clientes;
+
+-- String utilizada para restaurar
+insert into itau.clientes
+	(codig_cliente,nome_cliente,idade_cliente,email_cliente)
+select 
+	codig_cliente,nome_cliente,idade_cliente,email_clientes from itau.bkclientes;
+
+-- String para retornar o menor valor desejado de um campo
+select min(idade_cliente) from itau.clientes;
+select *  from itau.clientes where idade_cliente=18;
+
+-- String para retornar o maior valor desejado de um campo
+select max(idade_cliente) from itau.clientes;
+select * from itau.clientes where idade_cliente=100;
+
+-- String para trabalhar com sub-selects
+select * from itau.clientes where idade_cliente = (select max(idade_cliente) from itau.clientes);
+select * from itau.clientes where idade_cliente = (select min(idade_cliente) from itau.clientes);
+
+-- Aqui são outroas valores
+insert into itau.clientes
+(codigo_cliente,nome_cliente,idade_cliente,email_cliente)
+values
+(105,'Marcos André',16,'marcos@gmail.com.br');
+
+-- String utilizada para trazer registros intercalados
+select * from itau.clientes where idade_cliente in(20,30,40) order by nome_cliente;
+
+-- String utilizada para fazer a inserção  de um novo campo na tabela do BD.
+alter table itau.clientes add endereco varchar(50) not null;
+
+-- String utilizada para fazer a exclusão de um campo na tabela do BD.
+alter table itau.clientes drop endereco;
+
+-- String utilizada para renomear um campo de uma tabela do BD.alter
+alter table itau.clientes rename column endereco to endereco_cliente;
+
+-- Exemplo dos tipos de dados
+-- Varchar
+-- Char
+-- Text
+
+-- Neste exemplo temos o campo Nome varchar(50) not null
+-- Jose da Silva = 13 somente os 13
+-- Neste exemplo temos o campo Nome char(50) not null  text(50) 
+-- Jose da Silva = 13 porem ainda temos mais 37 caracteres em branco = 50 caracteres
+
+-- estado char(2) = SP, RJ, BA 
+
+describe itau.clientes;
+
+-- String utilizada para alterar o tamanho ou tipo de dados de campo na tabela do BD.
+alter table itau.clientes change endereco_cliente endereco_cliente varchar(80) not null;
+
+
+alter table itau.clientes change nome_cliente nome_cliente varchar(15) not null;
+alter table itau.clientes change nome_cliente nome_cliente varchar(50) not null;
+select * from itau.clientes;
+
+-- String permite fazer a inserção de um conteúdo em um campo expecífico
+UPDATE itau.clientes 
+SET 
+    endereco_cliente = 'Rua Catão'
+WHERE
+    codigo_cliente = 2
+
+UPDATE itau.clientes 
+SET 
+    email_cliente = 'nicole.b@terra.com.br'
+WHERE
+    codigo_cliente = 5;
+
+UPDATE itau.clientes 
+SET 
+    endereco_cliente = 'Atualizar o Endereço'
+WHERE
+    endereco_cliente = ''
+
+-- Criando nova tabela
+
+create table itau.vendas (
+	codigo_venda		integer not null auto_increment primary key,
+    nome_venda			varchar (30) not null,
+    quantidade_produtos	integer not null,
+    valor_unitario		decimal(8,2) not null,
+    nome_vendedor		varchar (80) not null
+);
+use itau;
+-- Inserindo os dados na nova tabela
+insert into itau.vendas
+(nome_venda,quantidade_produtos,valor_unitario,nome_vendedor)
+values
+('Mouse',30,35.99,'Marcos'),
+('Impressora',10,280.50,'Cristina'),
+('Scanner',15,150.00,'Marcos'),
+('Monitor',50,480.50,'Cristina');
+
+-- Listando os valores
+SELECT 
+    nome_venda,
+    quantidade_produtos,
+    valor_unitario,
+    (quantidade_produtos * valor_unitario) as total,
+    nome_vendedor
+FROM
+    itau.vendas;
+    
+-- Calculando os valoresdas tuplas
+SELECT 
+    SUM(quantidade_produtos * valor_unitario) AS Total_Geral
+FROM
+    itau.vendas;
+
+-- Fazendo agrupamento de valores
+SELECT 
+    SUM(quantidade_produtos * valor_unitario) AS Total_Vendido,
+    nome_vendedor
+FROM
+    itau.vendas
+GROUP BY nome_vendedor;
+
+-- Agrupando resultados de um select
+SELECT 
+    COUNT(idade_cliente) AS Total_Clientes, idade_cliente
+FROM
+    itau.clientes
+GROUP BY idade_cliente
+ORDER BY idade_cliente;
+
+-- validando o agrupamento
+SELECT 
+    nome_cliente,
+    email_cliente,
+    endereco_cliente
+FROM
+    itau.clientes
+WHERE
+    idade_cliente = 100;
+
+-- Utilizando modelagem gráfica
+
+use itau;
+CREATE TABLE `Produtos` (
+	`Codigo_Produto` INT NOT NULL AUTO_INCREMENT,
+	`Nome_Produto` varchar(30) NOT NULL,
+	`Valor_Produto` DECIMAL(8,2) NOT NULL,
+	`Codigo_Marca` INT NOT NULL,
+	PRIMARY KEY (`Codigo_Produto`)
+);
+
+CREATE TABLE `Marcas` (
+	`Codigo_Marca` INT NOT NULL AUTO_INCREMENT,
+	`Nome_Marca` varchar(50) NOT NULL,
+	PRIMARY KEY (`Codigo_Marca`)
+);
+
+ALTER TABLE `Produtos` ADD CONSTRAINT `Produtos_fk0` FOREIGN KEY (`Codigo_Marca`) REFERENCES `Marcas`(`Codigo_Marca`);
+
+describe itau.Produtos;
+describe itau.Marcas;
+
+select * from itau.produtos;
+
+-- Criando os produtos na tabela marca
+
+insert into itau.Marcas
+	(nome_marca)
+values
+		('Brastemp'),
+		('Eletrolux'),
+		('Sony'),
+		('LG');
+        
+ -- Inserindo agora os produtos pois a FK é PK do marcas e daria erro se fizesse primeiro
+ insert into itau.Produtos
+	(nome_produto,valor_produto,codigo_marca)
+values
+	('Fogão',1800,1),
+	('Batedeira',280,2),
+	('Liquidificador',89,2),
+	('Tv',2000,3);
+    
+-- FAZENDO O JION DOS DADOS DAS TABELAS
+select p.Codigo_Produto, p.Nome_Produto,p.Valor_Produto, m.Nome_Marca
+	from itau.Produtos as p
+    inner join itau.Marcas as m
+    on(p.Codigo_Marca = m.Codigo_Marca);
+
+insert into itau.Marcas
+	(nome_marca)
+values
+		('Samsung'),
+		('HP');
+    
+-- Criando procedures para criar backup das tabelas
+-- Criando backup
+create table itau.bkp_marcas select * from itau.Marcas;
+create table itau.bkp_Produtos select * from itau.Produtos;
+
+-- Com base nos backups vamos agora gerar a triger
+
