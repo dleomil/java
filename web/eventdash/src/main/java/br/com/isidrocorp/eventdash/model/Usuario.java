@@ -29,7 +29,7 @@ public class Usuario {
 	@Column (name = "senha_usuario", length = 30, nullable = false)
 	private String senha;
 	
-	@Column (name = "departamento", length = 100)
+	@Column (name = "departamento_usuario", length = 100)
 	private String departamento;
 	
 	@Column (name = "link_foto", length = 255)

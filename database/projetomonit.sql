@@ -1550,10 +1550,10 @@ INSERT INTO itmn_evento values (null, '2020-3-21', 5,6);
 
 -- Criando nova tabela para o projeto monit
 create table itmn_usuario (
-	id_usuario 				integer not null auto_increment primary key,
-    nome_usuario 			varchar(150) not null,
-    email_usuario 			varchar (100) not null unique,
-    racf_usuario 			varchar (7) not null unique,
+	id_usuario 				integer			not null auto_increment primary key,
+    nome_usuario 			varchar(150)	not null,
+    email_usuario 			varchar (100)	unique not null ,
+    racf_usuario 			varchar (7)		unique not null ,
     departamento_usuario 	varchar (100),
     link_foto				varchar(255)
     
@@ -1564,4 +1564,10 @@ insert into itmn_usuario
 		(null,'Professor Isidro', 'isidro@isidro.com.br', 'isidro', 'Ensino','https://avatars.githubusercontent.com/u/6184696?v=4'),
 		(null,'Daniel Leomil', 'daniel@testemail.com', 'daniel', 'Tecnologia','https://avatars.githubusercontent.com/u/22148546?v=4')
 
-	
+use projeto;
+
+alter table itmn_usuario 
+	add column senha_usuario
+		varchar (30) not null;
+update itmn_usuario set senha_usuario = '1234'where id_usuario > 0;
+
