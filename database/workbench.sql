@@ -29,7 +29,7 @@ values
 	(4,"Willian Soares",25,"willian@itau-unibanco.com.br");
 
 -- Gerando dados para inserir nas tabelas "http://generatedata.com/"
-INSERT INTO `itau.clientes` (`codigo_cliente`,`nome_cliente`,`idade_cliente`,`email_cliente`) 
+INSERT INTO itau.clientes (`codigo_cliente`,`nome_cliente`,`idade_cliente`,`email_cliente`) 
 	VALUES	(5,"Dana Maxwell",26,"ligula.eu.enim@laciniaSedcongue.ca"),
 			(6,"Ruby Travis",54,"urna.nec@tellusjusto.ca"),
 			(7,"Moses Strong",39,"habitant.morbi@Donec.co.uk"),
@@ -167,9 +167,9 @@ delete from itau.clientes;
 
 -- String utilizada para restaurar
 insert into itau.clientes
-	(codig_cliente,nome_cliente,idade_cliente,email_cliente)
+	(codigo_cliente,nome_cliente,idade_cliente,email_cliente)
 select 
-	codig_cliente,nome_cliente,idade_cliente,email_clientes from itau.bkclientes;
+	codigo_cliente,nome_cliente,idade_cliente,email_clientes from itau.bkclientes;
 
 -- String para retornar o menor valor desejado de um campo
 select min(idade_cliente) from itau.clientes;
